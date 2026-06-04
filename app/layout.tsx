@@ -29,6 +29,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
   },
+  verification: {
+    google: 'google7fd7e50eec387d10',
+  },
   icons: {
     icon: '/favicon.svg',
     apple: '/icons/apple-touch-icon.png',
