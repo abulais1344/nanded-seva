@@ -8,6 +8,7 @@ import Testimonials from './components/Testimonials';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import FloatingButtons from './components/FloatingButtons';
+import InstallBanner from './components/InstallBanner';
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <FAQ />
       <Footer />
       <FloatingButtons />
+      <InstallBanner />
     </main>
   );
 }

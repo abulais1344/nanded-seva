@@ -31,6 +31,16 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/favicon.svg',
+    apple: '/icons/apple-touch-icon.png',
+  },
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'NandedSeva',
+  },
+  formatDetection: {
+    telephone: false,
   },
   openGraph: {
     title: 'NandedSeva | Trusted Home & Travel Services in Nanded',
@@ -83,9 +93,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${sora.variable} ${notoSans.variable}`}>
       <head>
+        <meta name="theme-color" content="#0F3460" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js')
+                    .catch(function(err) { console.log('SW registration failed:', err); });
+                });
+              }
+            `,
+          }}
         />
       </head>
       <body
