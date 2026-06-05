@@ -111,31 +111,47 @@ export default function Navbar() {
             <div className="flex items-center gap-3">
               {/* Language Switcher */}
               <div className="relative">
-                {/* Tooltip */}
+                {/* Tooltip — below buttons */}
                 <AnimatePresence>
                   {showHint && (
                     <motion.div
-                      initial={{ opacity: 0, y: 6, scale: 0.92 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 4, scale: 0.95 }}
-                      transition={{ duration: 0.25 }}
-                      className="absolute -top-11 left-1/2 -translate-x-1/2 whitespace-nowrap
-                        text-xs font-semibold px-3 py-1.5 rounded-full pointer-events-none z-50"
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.22 }}
+                      className="pointer-events-none"
                       style={{
+                        position: 'absolute',
+                        top: 'calc(100% + 10px)',
+                        right: 0,
+                        zIndex: 9999,
+                        whiteSpace: 'nowrap',
                         background: '#0F3460',
                         color: '#fff',
-                        border: '1px solid rgba(52,199,123,0.45)',
-                        boxShadow: '0 4px 16px rgba(15,52,96,0.25)',
+                        border: '1px solid #34C77B',
+                        borderRadius: 8,
+                        padding: '8px 14px',
+                        fontSize: 13,
+                        fontWeight: 600,
+                        boxShadow: '0 8px 24px rgba(15,52,96,0.35)',
                       }}
                     >
+                      {/* Arrow pointing UP */}
+                      <span style={{
+                        position: 'absolute',
+                        top: -6,
+                        right: 16,
+                        width: 10,
+                        height: 10,
+                        background: '#0F3460',
+                        border: '1px solid #34C77B',
+                        borderBottom: 'none',
+                        borderRight: 'none',
+                        transform: 'rotate(45deg)',
+                      }} />
                       <span style={{ color: '#34C77B' }}>भाषा बदला</span>
-                      <span className="mx-1.5 opacity-40">|</span>
+                      <span style={{ margin: '0 6px', opacity: 0.4 }}>|</span>
                       Change Language
-                      {/* Arrow */}
-                      <span
-                        className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-2.5 h-2.5 rotate-45"
-                        style={{ background: '#0F3460', border: '1px solid rgba(52,199,123,0.45)', borderTop: 'none', borderLeft: 'none' }}
-                      />
                     </motion.div>
                   )}
                 </AnimatePresence>
