@@ -47,9 +47,27 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem('nandedseva-lang') as Locale | null;
-    const browserLang = navigator.language.split('-')[0] as Locale;
-    const initial: Locale = saved || (['hi', 'mr'].includes(browserLang) ? browserLang : 'en');
-    setLocaleState(initial);
+
+    if (saved) {
+      // Return visit — use saved preference, never override
+      setLocaleState(saved);
+      return;
+    }
+
+    // First visit — detect from browser language list
+    const langs = navigator.languages?.length
+      ? navigator.languages
+      : [navigator.language];
+
+    let detected: Locale = 'en';
+    for (const lang of langs) {
+      if (lang.startsWith('mr')) { detected = 'mr'; break; }
+      if (lang.startsWith('hi')) { detected = 'hi'; break; }
+    }
+
+    // Save immediately so future visits skip detection
+    localStorage.setItem('nandedseva-lang', detected);
+    setLocaleState(detected);
   }, []);
 
   useEffect(() => {
