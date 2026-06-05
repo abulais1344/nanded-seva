@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Menu, X, Phone } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useI18n, type Locale } from '@/lib/i18n';
 
 const NAV_LINKS = [
@@ -24,6 +24,9 @@ export default function Navbar() {
   const { t, locale, setLocale } = useI18n();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+  const [pulsing, setPulsing] = useState(false);
+  const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname = usePathname();
   const router = useRouter();
   const isHome = pathname === '/';
@@ -38,6 +41,26 @@ export default function Navbar() {
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
+
+  // Language hint — show once on first visit
+  useEffect(() => {
+    const alreadyShown = localStorage.getItem('lang-hint-shown');
+    if (alreadyShown) return;
+    // Small delay so page finishes loading before hint appears
+    hintTimer.current = setTimeout(() => {
+      setShowHint(true);
+      setPulsing(true);
+      // Auto-dismiss after 5 seconds
+      hintTimer.current = setTimeout(() => {
+        setShowHint(false);
+        setPulsing(false);
+        localStorage.setItem('lang-hint-shown', '1');
+      }, 5000);
+    }, 1500);
+    return () => {
+      if (hintTimer.current) clearTimeout(hintTimer.current);
+    };
+  }, []);
 
   const handleNavClick = (e: React.MouseEvent, link: (typeof NAV_LINKS)[number]) => {
     e.preventDefault();
@@ -87,18 +110,62 @@ export default function Navbar() {
             {/* Right side: Lang + CTA + Hamburger */}
             <div className="flex items-center gap-3">
               {/* Language Switcher */}
-              <div className="flex items-center gap-1 bg-gray-100 rounded-full px-1 py-1">
-                {LANG_OPTIONS.map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => setLocale(lang.code)}
-                    className={`text-xs font-semibold px-2.5 py-1 rounded-full transition-all ${
-                      locale === lang.code ? 'bg-[#0F3460] text-white' : 'text-gray-600 hover:text-[#0F3460]'
-                    }`}
-                  >
-                    {lang.label}
-                  </button>
-                ))}
+              <div className="relative">
+                {/* Tooltip */}
+                <AnimatePresence>
+                  {showHint && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 6, scale: 0.92 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 4, scale: 0.95 }}
+                      transition={{ duration: 0.25 }}
+                      className="absolute -top-11 left-1/2 -translate-x-1/2 whitespace-nowrap
+                        text-xs font-semibold px-3 py-1.5 rounded-full pointer-events-none z-50"
+                      style={{
+                        background: '#0F3460',
+                        color: '#fff',
+                        border: '1px solid rgba(52,199,123,0.45)',
+                        boxShadow: '0 4px 16px rgba(15,52,96,0.25)',
+                      }}
+                    >
+                      <span style={{ color: '#34C77B' }}>भाषा बदला</span>
+                      <span className="mx-1.5 opacity-40">|</span>
+                      Change Language
+                      {/* Arrow */}
+                      <span
+                        className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-2.5 h-2.5 rotate-45"
+                        style={{ background: '#0F3460', border: '1px solid rgba(52,199,123,0.45)', borderTop: 'none', borderLeft: 'none' }}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Buttons with optional pulse ring */}
+                <div
+                  className={`flex items-center gap-1 bg-gray-100 rounded-full px-1 py-1 ${
+                    pulsing ? 'lang-pulse' : ''
+                  }`}
+                >
+                  {LANG_OPTIONS.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => {
+                        setLocale(lang.code);
+                        if (showHint || pulsing) {
+                          setShowHint(false);
+                          setPulsing(false);
+                          if (hintTimer.current) clearTimeout(hintTimer.current);
+                          localStorage.setItem('lang-hint-shown', '1');
+                        }
+                      }}
+                      className={`text-xs font-semibold px-2.5 py-1 rounded-full transition-all ${
+                        locale === lang.code ? 'bg-[#0F3460] text-white' : 'text-gray-600 hover:text-[#0F3460]'
+                      }`}
+                    >
+                      {lang.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Book Now (desktop) */}
