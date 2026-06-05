@@ -6,6 +6,7 @@ import { MessageCircle, Search, X, Info } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { supabase, type Service } from '@/lib/supabase';
 import { getIcon, getColor } from '@/lib/services';
+import { getServiceName, getServiceDesc } from '@/lib/serviceI18n';
 import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
 import FloatingButtons from '@/app/components/FloatingButtons';
@@ -193,8 +194,11 @@ function ServiceGroup({ title, items, note }: { title: string; items: Service[];
 }
 
 function ServiceCard({ service, index }: { service: Service; index: number }) {
+  const { locale, t } = useI18n();
   const Icon = getIcon(service.icon);
   const color = getColor(service.icon);
+  const displayName = getServiceName(service.name, locale);
+  const displayDesc = getServiceDesc(service.name, service.description, t, locale);
   const waMsg = encodeURIComponent(`Hello NandedSeva, I would like to book: ${service.name}`);
   const isTravel = service.category === 'travel';
 
@@ -215,10 +219,10 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
 
       <div className="flex-1 min-w-0">
         <h3 className="font-heading font-semibold text-sm sm:text-base text-gray-900 mb-1 leading-tight">
-          {service.name}
+          {displayName}
         </h3>
         <p className="text-xs text-gray-500 leading-relaxed line-clamp-2 mb-2">
-          {service.description}
+          {displayDesc}
         </p>
 
         {/* Price badge */}

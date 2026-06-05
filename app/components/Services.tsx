@@ -6,6 +6,7 @@ import { MessageCircle, Settings } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { supabase, type Service } from '@/lib/supabase';
 import { getIcon, getColor } from '@/lib/services';
+import { getServiceName, getServiceDesc } from '@/lib/serviceI18n';
 
 type Category = 'all' | 'home' | 'travel';
 
@@ -100,8 +101,11 @@ export default function Services() {
 }
 
 function ServiceCard({ service, index, t }: { service: Service; index: number; t: (k: string) => string }) {
+  const { locale } = useI18n();
   const Icon = getIcon(service.icon);
   const color = getColor(service.icon);
+  const displayName = getServiceName(service.name, locale);
+  const displayDesc = getServiceDesc(service.name, service.description, t, locale);
   const waMsg = encodeURIComponent(`Hello NandedSeva, I would like to book: ${service.name}`);
 
   return (
@@ -120,10 +124,10 @@ function ServiceCard({ service, index, t }: { service: Service; index: number; t
       </div>
       <div className="flex-1">
         <h3 className="font-heading font-semibold text-sm sm:text-base text-gray-900 mb-1 leading-tight">
-          {service.name}
+          {displayName}
         </h3>
         <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
-          {service.description}
+          {displayDesc}
         </p>
       </div>
       <a href={`https://wa.me/918421222893?text=${waMsg}`}
