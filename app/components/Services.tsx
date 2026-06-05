@@ -7,6 +7,7 @@ import { useI18n } from '@/lib/i18n';
 import { supabase, type Service } from '@/lib/supabase';
 import { getIcon, getColor } from '@/lib/services';
 import { getServiceName, getServiceDesc } from '@/lib/serviceI18n';
+import { trackServiceClick } from '@/lib/analytics';
 
 type Category = 'all' | 'home' | 'travel';
 
@@ -134,7 +135,7 @@ function ServiceCard({ service, index, t }: { service: Service; index: number; t
         target="_blank" rel="noopener noreferrer"
         className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg text-white transition-all active:scale-95 min-h-[36px]"
         style={{ background: '#34C77B' }}
-        onClick={e => e.stopPropagation()}>
+        onClick={e => { e.stopPropagation(); trackServiceClick(service.name); }}>
         <MessageCircle size={13} />
         {t('services.bookNow')}
       </a>
