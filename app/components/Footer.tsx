@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Phone, Mail, MapPin, MessageCircle } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 
@@ -8,6 +9,12 @@ const NAV_LINKS = [
   { key: 'nav.services', href: '#services' },
   { key: 'nav.about', href: '#about' },
   { key: 'nav.contact', href: '#contact' },
+];
+
+const LEGAL_LINKS = [
+  { label: 'Privacy Policy',   href: '/privacy-policy' },
+  { label: 'Terms of Service', href: '/terms-of-service' },
+  { label: 'Disclaimer',       href: '/disclaimer' },
 ];
 
 export default function Footer() {
@@ -65,6 +72,20 @@ export default function Footer() {
                   </a>
                 </li>
               ))}
+              <li className="pt-1">
+                <hr style={{ borderColor: 'rgba(255,255,255,0.1)' }} className="mb-2" />
+              </li>
+              {LEGAL_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm transition-colors hover:text-white"
+                    style={{ color: 'rgba(255,255,255,0.55)' }}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -100,10 +121,21 @@ export default function Footer() {
         </div>
 
         <div
-          className="mt-10 pt-6 border-t text-center text-xs"
-          style={{ borderColor: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}
+          className="mt-10 pt-6 border-t text-center text-xs flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0"
+          style={{ borderColor: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.45)' }}
         >
-          {t('footer.rights')}
+          <span>© 2026 NandedSeva. All rights reserved.</span>
+          <span className="hidden sm:inline mx-2" style={{ color: 'rgba(255,255,255,0.2)' }}>|</span>
+          <span className="flex gap-3">
+            {LEGAL_LINKS.map((link, i) => (
+              <span key={link.href} className="flex items-center gap-3">
+                {i > 0 && <span style={{ color: 'rgba(255,255,255,0.2)' }}>|</span>}
+                <Link href={link.href} className="hover:text-white transition-colors">
+                  {link.label}
+                </Link>
+              </span>
+            ))}
+          </span>
         </div>
       </div>
     </footer>

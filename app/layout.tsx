@@ -3,6 +3,7 @@ import { Sora, Noto_Sans } from 'next/font/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
 import { I18nProvider } from '@/lib/i18n';
+import CookieBanner from '@/app/components/CookieBanner';
 
 const sora = Sora({
   subsets: ['latin'],
@@ -120,6 +121,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         style={{ fontFamily: 'var(--font-noto), sans-serif' }}
       >
         <I18nProvider>{children}</I18nProvider>
+        <CookieBanner />
       </body>
       {process.env.NEXT_PUBLIC_GA_ID && (
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
