@@ -114,6 +114,24 @@
     "rights": "© 2025 NandedSeva. All rights reserved.",
     "address": "Nanded, Maharashtra - 431601"
   },
+  "bookingModal": {
+    "selectService": "Which service do you need?",
+    "name": "Your name",
+    "phone": "Phone number",
+    "problem": "Describe your problem",
+    "problemPlaceholder": "e.g. Fridge not cooling since 2 days",
+    "submit": "Book Now on WhatsApp",
+    "back": "Back",
+    "nameTooShort": "Name must be at least 2 characters",
+    "phoneInvalid": "Please enter a valid 10-digit number",
+    "problemTooShort": "Please describe your problem (min 5 chars)",
+    "plumber": "Plumber",
+    "electrician": "Electrician",
+    "acRepair": "AC Repair",
+    "fridgeRepair": "Fridge Repair",
+    "packersMovers": "Packers & Movers",
+    "other": "Other"
+  },
   "booking": {
     "title": "Book a Service",
     "name": "Full Name",

@@ -114,6 +114,24 @@
     "rights": "© 2025 NandedSeva. सभी अधिकार सुरक्षित।",
     "address": "नांदेड, महाराष्ट्र - 431601"
   },
+  "bookingModal": {
+    "selectService": "आपको कौनसी सेवा चाहिए?",
+    "name": "आपका नाम",
+    "phone": "फोन नंबर",
+    "problem": "समस्या बताएं",
+    "problemPlaceholder": "जैसे: फ्रिज 2 दिन से ठंडा नहीं हो रहा",
+    "submit": "WhatsApp पर बुक करें",
+    "back": "वापस",
+    "nameTooShort": "नाम कम से कम 2 अक्षर का होना चाहिए",
+    "phoneInvalid": "कृपया 10 अंकों का सही नंबर दर्ज करें",
+    "problemTooShort": "कृपया समस्या विस्तार से बताएं (कम से कम 5 अक्षर)",
+    "plumber": "प्लंबर",
+    "electrician": "इलेक्ट्रीशियन",
+    "acRepair": "AC रिपेयर",
+    "fridgeRepair": "फ्रिज रिपेयर",
+    "packersMovers": "पैकर्स एंड मूवर्स",
+    "other": "अन्य"
+  },
   "booking": {
     "title": "सेवा बुक करें",
     "name": "पूरा नाम",

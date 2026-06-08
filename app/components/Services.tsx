@@ -8,6 +8,7 @@ import { supabase, type Service } from '@/lib/supabase';
 import { getIcon, getColor } from '@/lib/services';
 import { getServiceName, getServiceDesc } from '@/lib/serviceI18n';
 import { trackServiceClick } from '@/lib/analytics';
+import { useBooking } from '@/app/components/BookingModal';
 
 type Category = 'all' | 'home' | 'travel';
 
@@ -103,11 +104,11 @@ export default function Services() {
 
 function ServiceCard({ service, index, t }: { service: Service; index: number; t: (k: string) => string }) {
   const { locale } = useI18n();
+  const { openModal } = useBooking();
   const Icon = getIcon(service.icon);
   const color = getColor(service.icon);
   const displayName = getServiceName(service.name, locale);
   const displayDesc = getServiceDesc(service.name, service.description, t, locale);
-  const waMsg = encodeURIComponent(`Hello NandedSeva, I would like to book: ${service.name}`);
 
   return (
     <motion.div
@@ -131,14 +132,14 @@ function ServiceCard({ service, index, t }: { service: Service; index: number; t
           {displayDesc}
         </p>
       </div>
-      <a href={`https://wa.me/918421222893?text=${waMsg}`}
-        target="_blank" rel="noopener noreferrer"
-        className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg text-white transition-all active:scale-95 min-h-[36px]"
+      <button
+        onClick={() => { trackServiceClick(service.name); openModal(displayName); }}
+        className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg text-white transition-all active:scale-95 min-h-[36px] w-full"
         style={{ background: '#34C77B' }}
-        onClick={e => { e.stopPropagation(); trackServiceClick(service.name); }}>
+      >
         <MessageCircle size={13} />
         {t('services.bookNow')}
-      </a>
+      </button>
     </motion.div>
   );
 }

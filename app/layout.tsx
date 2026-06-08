@@ -3,6 +3,7 @@ import { Sora, Noto_Sans } from 'next/font/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
 import { I18nProvider } from '@/lib/i18n';
+import { BookingModalProvider } from '@/app/components/BookingModal';
 
 const sora = Sora({
   subsets: ['latin'],
@@ -119,7 +120,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className="antialiased min-h-screen flex flex-col"
         style={{ fontFamily: 'var(--font-noto), sans-serif' }}
       >
-        <I18nProvider>{children}</I18nProvider>
+        <I18nProvider>
+          <BookingModalProvider>{children}</BookingModalProvider>
+        </I18nProvider>
       </body>
       {process.env.NEXT_PUBLIC_GA_ID && (
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />

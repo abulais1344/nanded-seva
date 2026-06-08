@@ -10,6 +10,7 @@ import { getServiceName, getServiceDesc } from '@/lib/serviceI18n';
 import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
 import FloatingButtons from '@/app/components/FloatingButtons';
+import { useBooking } from '@/app/components/BookingModal';
 
 type Category = 'all' | 'home' | 'travel';
 
@@ -195,11 +196,11 @@ function ServiceGroup({ title, items, note }: { title: string; items: Service[];
 
 function ServiceCard({ service, index }: { service: Service; index: number }) {
   const { locale, t } = useI18n();
+  const { openModal } = useBooking();
   const Icon = getIcon(service.icon);
   const color = getColor(service.icon);
   const displayName = getServiceName(service.name, locale);
   const displayDesc = getServiceDesc(service.name, service.description, t, locale);
-  const waMsg = encodeURIComponent(`Hello NandedSeva, I would like to book: ${service.name}`);
   const isTravel = service.category === 'travel';
 
   return (
@@ -247,13 +248,14 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
         ) : null}
       </div>
 
-      <a href={`https://wa.me/918421222893?text=${waMsg}`}
-        target="_blank" rel="noopener noreferrer"
-        className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg text-white transition-all active:scale-95 min-h-[36px]"
-        style={{ background: '#34C77B' }}>
+      <button
+        onClick={() => openModal(displayName)}
+        className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg text-white transition-all active:scale-95 min-h-[36px] w-full"
+        style={{ background: '#34C77B' }}
+      >
         <MessageCircle size={13} />
-        Book Now
-      </a>
+        {t('services.bookNow')}
+      </button>
     </motion.div>
   );
 }
